@@ -344,3 +344,43 @@ class Account
   end
 end
 ```
+---
+# Change is constant and imminent (again)
+
+What happens when Auditor's requirements change and we need to pass in the
+  audit file name instead.
+
+--
+
+```bash
+> ruby main.rb 100.00 my_audit.txt
+100.0
+150.0
+>
+```
+
+---
+# What needs to change to accomplish this
+
+```bash
+Changes not staged for commit:
+
+  modified:   lib/auditor.rb
+  modified:   spec/auditor_spec.rb
+
+```
+
+---
+class: center, middle
+
+# Single Responsibility Principle (SRP)
+
+The main reason I find to use DI is to respect SRP and to maintain one and only
+one reason for a class to change. In this instance we have accomplished this
+goal.
+
+---
+class: center, middle
+
+# Thank you
+
