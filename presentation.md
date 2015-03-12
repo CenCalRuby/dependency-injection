@@ -267,5 +267,33 @@ What happens when Auditor's requirements change and we need to pass in the
 ---
 # What needs to change to accomplish this
 
+```bash
+Changes not staged for commit:
 
+  modified:   accounting.rb
+  modified:   lib/account.rb
+  modified:   lib/auditor.rb
+  modified:   spec/account_spec.rb
+  modified:   spec/auditor_spec.rb
+```
 
+```ruby
+require_relative './auditor'
+
+class Account
+  attr_reader :balance
+
+  def initialize(initial_balance, audit_file)
+    @balance = initial_balance
+    @audit_file = audit_file
+  end
+
+  ...
+
+  private
+
+  def auditor
+    Auditor.new(@audit_file)
+  end
+end
+```
