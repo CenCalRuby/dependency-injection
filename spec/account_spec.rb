@@ -3,7 +3,9 @@ require 'account'
 describe Account do
   describe '.deposit' do
     it 'should add to the balance' do
-      account = Account.new(100.00, 'audit_file.txt')
+      auditor = instance_double('auditor', :audit)
+      allow(auditor).to receive(:audit)
+      account = Account.new(100.00, auditor)
 
       account.deposit(20)
 
@@ -11,10 +13,8 @@ describe Account do
     end
 
     it 'should audit a deposit' do
-      account = Account.new(100.00, 'audit_file.txt')
-      auditor = spy('Auditor')
-      allow(Auditor).to receive(:new).with('audit_file.txt').
-        and_return(auditor)
+      auditor = instance_spy('auditor')
+      account = Account.new(100.00, auditor)
 
       account.deposit(20)
 
@@ -24,7 +24,9 @@ describe Account do
 
   describe '.withdraw' do
     it 'should subtract to the balance' do
-      account = Account.new(100.00, 'audit_file.txt')
+      auditor = instance_double('auditor')
+      allow(auditor).to receive(:audit)
+      account = Account.new(100.00, auditor)
 
       account.withdraw(20)
 
@@ -32,10 +34,8 @@ describe Account do
     end
 
     it 'should audit a withdrawal' do
-      account = Account.new(100.00, 'audit_file.txt')
-      auditor = spy('Auditor')
-      allow(Auditor).to receive(:new).with('audit_file.txt').
-        and_return(auditor)
+      auditor = instance_spy('auditor')
+      account = Account.new(100.00, auditor)
 
       account.withdraw(20)
 

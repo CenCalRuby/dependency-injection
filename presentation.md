@@ -174,7 +174,9 @@ describe Account do
   describe '.deposit' do
     it 'should add to the balance' do
       account = Account.new(100.00)
+
       account.deposit(20)
+
       expect(account.balance).to eq(120.00)
     end
 
@@ -182,25 +184,15 @@ describe Account do
       account = Account.new(100.00)
       auditor = spy('Auditor')
       allow(Auditor).to receive(:new).and_return(auditor)
+
       account.deposit(20)
+
       expect(auditor).to have_received(:audit).with('Deposited 20')
     end
   end
 
   describe '.withdraw' do
-    it 'should subtract to the balance' do
-      account = Account.new(100.00)
-      account.withdraw(20)
-      expect(account.balance).to eq(80.00)
-    end
-
-    it 'should audit a withdrawal' do
-      account = Account.new(100.00)
-      auditor = spy('Auditor')
-      allow(Auditor).to receive(:new).and_return(auditor)
-      account.withdraw(20)
-      expect(auditor).to have_received(:audit).with('Withdrew 20')
-    end
+    # Same tests as above for withdraw method
   end
 end
 ```
@@ -294,6 +286,61 @@ class Account
 
   def auditor
     Auditor.new(@audit_file)
+  end
+end
+```
+---
+class: center, middle
+
+# Now how would we implement this with DI
+
+---
+```ruby
+describe Account do
+  describe '.deposit' do
+    it 'should add to the balance' do
+      auditor = instance_double('auditor', :audit)
+      allow(auditor).to receive(:audit)
+      account = Account.new(100.00, auditor)
+
+      account.deposit(20)
+
+      expect(account.balance).to eq(120.00)
+    end
+
+    it 'should audit a deposit' do
+      auditor = instance_spy('auditor')
+      account = Account.new(100.00, auditor)
+
+      account.deposit(20)
+
+      expect(auditor).to have_received(:audit).with('Deposited 20')
+    end
+  end
+
+  describe '.withdraw' do
+    # Same tests as above for withdraw method
+  end
+end
+```
+---
+```ruby
+class Account
+  attr_reader :balance
+
+  def initialize(initial_balance, auditor)
+    @balance = initial_balance
+    @auditor = auditor
+  end
+
+  def deposit(amount)
+    @balance += amount
+    @auditor.audit("Deposited #{amount}")
+  end
+
+  def withdraw(amount)
+    @balance -= amount
+    @auditor.audit("Withdrew #{amount}")
   end
 end
 ```
