@@ -236,7 +236,7 @@ if __FILE__ == $0
 end
 ```
 ```bash
-> ruby main.rb 100.00
+> ruby accounting.rb 100.00
 100.0
 150.0
 >
@@ -250,7 +250,7 @@ What happens when Auditor's requirements change and we need to pass in the
 --
 
 ```bash
-> ruby main.rb 100.00 my_audit.txt
+> ruby accounting.rb 100.00 my_audit.txt
 100.0
 150.0
 >
@@ -353,7 +353,7 @@ What happens when Auditor's requirements change and we need to pass in the
 --
 
 ```bash
-> ruby main.rb 100.00 my_audit.txt
+> ruby accounting.rb 100.00 my_audit.txt
 100.0
 150.0
 >
