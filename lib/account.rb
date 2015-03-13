@@ -3,8 +3,9 @@ require_relative './auditor'
 class Account
   attr_reader :balance
 
-  def initialize(initial_balance)
+  def initialize(initial_balance, audit_file)
     @balance = initial_balance
+    @audit_file = audit_file
   end
 
   def deposit(amount)
@@ -20,6 +21,6 @@ class Account
   private
 
   def auditor
-    Auditor.new
+    Auditor.new(@audit_file)
   end
 end
